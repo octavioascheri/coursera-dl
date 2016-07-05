@@ -300,7 +300,11 @@ def download_about(session, class_name, path='', overwrite=False,
     Download the 'about' metadata which is in JSON format and pretty-print it.
     """
     about_fn = os.path.join(path, class_name + '-about.json')
-    logging.debug('About file to be written to: %s', about_fn)
+    logging.debug('About file to be written to: %s', about_fn)logging.debug('Downloading new style (on demand) class %s', class_name)
+        return download_on_demand_class(args, class_name)           
+except ClassNotFound:
+    logging.debug('Downloading old style class %s', class_name)
+        return download_old_style_class(args, class_name)
     if os.path.exists(about_fn) and not overwrite and subtitle_language == 'en':
         return
 
@@ -845,8 +849,11 @@ def download_class(args, class_name):
 
     Returns True if the class appears completed.
     """
-    logging.debug('Downloading new style (on demand) class %s', class_name)
-    return download_on_demand_class(args, class_name)
+logging.debug('Downloading new style (on demand) class %s', class_name)
+        return download_on_demand_class(args, class_name)           
+except ClassNotFound:
+    logging.debug('Downloading old style class %s', class_name)
+        return download_old_style_class(args, class_name)
 
 
 def main():
